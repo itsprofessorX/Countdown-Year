@@ -1,41 +1,55 @@
-function updateCountdown() {
-    const targetDate = new Date("January 1, 2026 00:00:00").getTime();
-    const now = new Date().getTime();
-    const distance = targetDate - now;
-  
-    if (distance <= 0) {
-      document.getElementById("countdown").innerHTML = "🎆 Happy New Year 2026!";
-      return;
+function launchFireworks() {
+  const duration = 5 * 1000;
+  const animationEnd = Date.now() + duration;
+
+  const interval = setInterval(() => {
+    const timeLeft = animationEnd - Date.now();
+
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
     }
-  
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-  
-    document.getElementById("countdown").innerHTML =
-      `There are <span class="number">${days}</span> days, 
-      <span class="number">${hours}</span> hours, 
-      <span class="number">${minutes}</span> minutes, and 
-      <span class="number">${seconds}</span> seconds left until 2026.`;
+
+    confetti({
+      particleCount: 50,
+      startVelocity: 30,
+      spread: 360,
+      ticks: 60,
+      origin: {
+        x: Math.random(),
+        y: Math.random() - 0.2
+      }
+    });
+  }, 250);
+}
+
+function updateCountdown() {
+  const now = new Date();
+  const newYear = new Date("January 1, 2026 00:00:00");
+  const diff = newYear - now;
+
+  const countdownBox = document.getElementById("countdown");
+
+  if (diff <= 0) {
+    countdownBox.textContent = "🎉 Happy New Year 2026! 🎉";
+    if (!window._fireworksLaunched) {
+      launchFireworks();
+      window._fireworksLaunched = true;
+    }
+    return;
   }
-  
-  function applyTheme(isDark) {
-    document.body.classList.toggle('dark', isDark);
-    document.getElementById('modeToggle').checked = isDark;
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-  }
-  
-  document.getElementById('modeToggle').addEventListener('change', (e) => {
-    applyTheme(e.target.checked);
-  });
-  
-  function loadTheme() {
-    const saved = localStorage.getItem('theme');
-    applyTheme(saved === 'dark');
-  }
-  
-  loadTheme();
-  setInterval(updateCountdown, 1000);
-  updateCountdown();
-  
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  countdownBox.innerHTML = `There are <strong>${days}</strong> days, <strong>${hours}</strong> hours, <strong>${minutes}</strong> minutes, and <strong>${seconds}</strong> seconds left until 2026.`;
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// Theme toggle
+document.getElementById("modeToggle").addEventListener("change", () => {
+  document.body.classList.toggle("dark");
+});
