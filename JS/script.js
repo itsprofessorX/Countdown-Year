@@ -6,7 +6,8 @@ function launchFireworks() {
     const timeLeft = animationEnd - Date.now();
 
     if (timeLeft <= 0) {
-      return clearInterval(interval);
+      clearInterval(interval);
+      return;
     }
 
     confetti({
@@ -25,9 +26,9 @@ function launchFireworks() {
 function updateCountdown() {
   const now = new Date();
   const newYear = new Date("January 1, 2026 00:00:00");
-  const diff = newYear - now;
-
   const countdownBox = document.getElementById("countdown");
+
+  const diff = newYear - now;
 
   if (diff <= 0) {
     countdownBox.textContent = "🎉 Happy New Year 2026! 🎉";
@@ -38,18 +39,47 @@ function updateCountdown() {
     return;
   }
 
+  // Time left until 2026
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
   const minutes = Math.floor((diff / (1000 * 60)) % 60);
   const seconds = Math.floor((diff / 1000) % 60);
 
-  countdownBox.innerHTML = `There are <strong>${days}</strong> days, <strong>${hours}</strong> hours, <strong>${minutes}</strong> minutes, and <strong>${seconds}</strong> seconds left until 2026.`;
+  // Time wasted since Jan 1, 2025
+  const start2025 = new Date("January 1, 2025 00:00:00");
+  let wastedDiff = now - start2025;
+  wastedDiff = wastedDiff > 0 ? wastedDiff : 0;
+
+  const wastedDays = Math.floor(wastedDiff / (1000 * 60 * 60 * 24));
+  const wastedHours = Math.floor((wastedDiff / (1000 * 60 * 60)) % 24);
+  const wastedMinutes = Math.floor((wastedDiff / (1000 * 60)) % 60);
+  const wastedSeconds = Math.floor((wastedDiff / 1000) % 60);
+
+  // Update HTML
+  countdownBox.innerHTML = `
+    ⏳ Time Left: There are <strong>${days}</strong> days, 
+    <strong>${hours}</strong> hours, 
+    <strong>${minutes}</strong> minutes, and 
+    <strong>${seconds}</strong> seconds 
+    <span class="left-text">left until 2026!</span>
+    <br><br>
+    🗑️ Time Wasted: <strong>${wastedDays}</strong> days, 
+    <strong>${wastedHours}</strong> hours, 
+    <strong>${wastedMinutes}</strong> minutes, and 
+    <strong>${wastedSeconds}</strong> seconds 
+    <span class="wasted-text">wasted in 2026.</span>
+  `;
 }
 
+// Update countdown every second
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-// Theme toggle
-document.getElementById("modeToggle").addEventListener("change", () => {
+// Theme toggle logic
+const modeToggle = document.getElementById("modeToggle");
+document.body.classList.add("dark"); // Default to dark mode
+modeToggle.checked = true;
+
+modeToggle.addEventListener("change", () => {
   document.body.classList.toggle("dark");
 });
