@@ -67,7 +67,7 @@ function updateCountdown() {
     <strong>${wastedHours}</strong> hours, 
     <strong>${wastedMinutes}</strong> minutes, and 
     <strong>${wastedSeconds}</strong> seconds 
-    <span class="wasted-text">wasted in 2026.</span>
+    <span class="wasted-text">wasted in 2025.</span>
   `;
 }
 
