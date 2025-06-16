@@ -63,7 +63,7 @@ function updateCountdown() {
     <strong>${seconds}</strong> seconds 
     <span class="left-text">left until 2026!</span>
     <br><br>
-    🗑️ Time Wasted: <strong>${wastedDays}</strong> days, 
+    🗑️ Time Wasted: There are <strong>${wastedDays}</strong> days, 
     <strong>${wastedHours}</strong> hours, 
     <strong>${wastedMinutes}</strong> minutes, and 
     <strong>${wastedSeconds}</strong> seconds 
