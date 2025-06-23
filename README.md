@@ -1,3 +1,3 @@
 # Countdown-Year
 
-[View Animated CountDown Web live Here](https://https://dayscountdown.great-site.net/)
+[View Animated CountDown Web live Here](https://dayscountdown.great-site.net/)
